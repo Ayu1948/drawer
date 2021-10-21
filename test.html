@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <!--设置viewport-->
+  <meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=0" />
+</head>
+<style>
+  .div {
+    width: 100px;
+    height: 50px;
+    position: fixed;
+    background-color: red;
+    border-radius: 25px;
+  }
+</style>
+
+<body>
+  <div class="div" id="div"></div>
+</body>
+<script>
+  window.onload = function () {
+    var flag = 0; //标记是拖曳还是点击
+    var oDiv = document.getElementById('div');
+    var disX, moveX, L, T, starX, starY, starXEnd, starYEnd;
+    oDiv.addEventListener('touchstart', function (e) {
+      flag = 0;
+      e.preventDefault(); //阻止触摸时页面的滚动，缩放
+      disX = e.touches[0].clientX - this.offsetLeft;
+      disY = e.touches[0].clientY - this.offsetTop;
+      //手指按下时的坐标
+      starX = e.touches[0].clientX;
+      starY = e.touches[0].clientY;
+      //console.log(disX);
+    });
+    oDiv.addEventListener('touchmove', function (e) {
+      console.log(this)
+      flag = 1;
+      L = e.touches[0].clientX - disX;
+      T = e.touches[0].clientY - disY;
+      //移动时 当前位置与起始位置之间的差值
+      starXEnd = e.touches[0].clientX - starX;
+      starYEnd = e.touches[0].clientY - starY;
+      //console.log(L);
+      if (L < 0) { //限制拖拽的X范围，不能拖出屏幕
+        L = 0;
+      } else if (L > document.documentElement.clientWidth - this.offsetWidth) {
+        L = document.documentElement.clientWidth - this.offsetWidth;
+      }
+      if (T < 0) { //限制拖拽的Y范围，不能拖出屏幕
+        T = 0;
+      } else if (T > document.documentElement.clientHeight - this.offsetHeight) {
+        T = document.documentElement.clientHeight - this.offsetHeight;
+      }
+      moveX = L + 'px';
+      moveY = T + 'px';
+      //console.log(moveX);
+      this.style.left = moveX;
+      this.style.top = moveY;
+    });
+    window.addEventListener('touchend', function (e) {
+      //alert(parseInt(moveX))
+      //判断滑动方向
+      if (flag === 0) { //点击
+        // window.location.href = 'http://www.baidu.com';
+        console.log(1)
+      } else {
+        // console.log(oDiv)
+        // oDiv.style.left = 0;
+      }
+    });
+
+
+  }
+</script>
+
+</html>
